@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>ЧИСТОВ — тест hero</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --bg-primary: #121214;
+            --text-primary: #F3F4F6;
+            --border-color: #2a2a30;
+            --radius-mobile: 14px;
+            --radius-header: 14px;
+            --container-padding: clamp(16px, 4vw, 40px);
+            --header-height: clamp(70px, 10vh, 90px);
+            --header-icon-size: clamp(40px, 5vw, 52px);
+            --header-gap: clamp(4px, 1vw, 8px);
+            --logo-height: 52px;
+            --burger-size: 40px;
+            --ring-hole: #F3F4F6;
+            --ring-size: 930px;
+            --hero-btn-color: #5724B1;
+            --accent-purple: #5724B1;
+            --accent-purple-light: #A57EFF;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        img { max-width: 100%; height: auto; display: block; }
+        a { color: inherit; text-decoration: none; cursor: pointer; }
+        ul { list-style: none; }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+            width: 100%;
+        }
+
+        /* ХЭДЕР */
+        .header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(18, 18, 20, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+        }
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: clamp(6px, 1.5vw, 12px);
+            width: 100%;
+            position: relative;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            z-index: 2;
+        }
+        .header-logo img {
+            height: var(--logo-height);
+            width: auto;
+            display: block;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: clamp(4px, 1vw, 12px);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 14px;
+            height: var(--header-icon-size);
+            border-radius: var(--radius-header);
+            color: #ffffff;
+            font-size: clamp(11px, 1.1vw, 13px);
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .nav-menu a:hover {
+            opacity: 0.7;
+            transform: translateY(-2px);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, 1.5vw, 20px);
+            margin-left: auto;
+            z-index: 2;
+            position: relative;
+        }
+        .header-action-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffffff;
+            font-size: clamp(11px, 1.1vw, 13px);
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+            background: none;
+            border: none;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .header-action-item:hover { opacity: 0.7; }
+        .header-action-item img {
+            height: 24px;
+            width: auto;
+            display: block;
+            flex-shrink: 0;
+        }
+        .header-action-item svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .phone-plate {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            background: var(--ring-hole);
+            color: var(--bg-primary);
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+            pointer-events: none;
+            z-index: 3;
+        }
+        .phone-plate.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            width: var(--burger-size);
+            height: var(--burger-size);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            z-index: 1100;
+            position: relative;
+        }
+        .menu-toggle:hover { opacity: 0.7; }
+        .menu-toggle span {
+            display: block;
+            height: 2.5px;
+            width: 22px;
+            background: #ffffff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        .menu-toggle.active span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+        /* ОВЕРЛЕЙ + МОБИЛЬНОЕ МЕНЮ */
+        .mobile-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1050;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            width: calc(100vw - 40px);
+            max-width: 440px;
+            max-height: calc(100vh - 40px);
+            background: var(--ring-hole);
+            border-radius: 30px;
+            z-index: 1060;
+            padding: 60px 28px 28px;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
+            overflow-y: auto;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+        }
+        .mobile-nav.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .mobile-nav-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--bg-primary);
+            font-size: 26px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            border-radius: 50%;
+        }
+        .mobile-nav-close:hover { transform: rotate(90deg); }
+
+        .mobile-nav-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 24px;
+        }
+        .mobile-nav-list a {
+            display: flex;
+            align-items: center;
+            padding: 14px 0;
+            color: var(--bg-primary);
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(18, 18, 20, 0.08);
+            transition: opacity 0.3s ease;
+        }
+        .mobile-nav-list a:hover { opacity: 0.6; }
+
+        .mobile-nav-contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .mobile-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            color: var(--bg-primary);
+            font-size: 15px;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+        .mobile-contact-item:hover { opacity: 0.6; }
+        .mobile-contact-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .mobile-contact-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: var(--bg-primary);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .mobile-contact-icon img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+        }
+
+        /* HERO */
+        .hero {
+            padding: calc(var(--header-height) + 40px) 0 80px;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-ring-wrap {
+            position: relative;
+            width: var(--ring-size);
+            height: var(--ring-size);
+            margin: 0 auto;
+        }
+
+        /* Свечение — снизу и по бокам, не сверху */
+        .hero-ring-wrap::before {
+            content: '';
+            position: absolute;
+            left: -8%;
+            right: -8%;
+            bottom: -20%;
+            top: 25%;
+            background: radial-gradient(ellipse at 50% 100%, rgba(155, 108, 230, 0.65) 0%, rgba(155, 108, 230, 0.25) 35%, transparent 72%);
+            filter: blur(60px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Кольцо — только чёрная тень */
+        .hero-ring-img {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
+            filter: blur(1px) drop-shadow(0 25px 60px rgba(0, 0, 0, 0.75));
+            z-index: 1;
+        }
+
+        /* Белый круг — сильно выпуклый */
+        .hero-ring-wrap::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            background: var(--ring-hole);
+            border-radius: 50%;
+            z-index: 2;
+            pointer-events: none;
+            box-shadow:
+                inset 0 20px 35px rgba(255, 255, 255, 1),
+                inset 0 -20px 35px rgba(0, 0, 0, 0.28),
+                inset 0 0 25px rgba(0, 0, 0, 0.08),
+                0 12px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-ring-content {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 592px;
+            padding-top: 263px;
+            z-index: 3;
+            text-align: left;
+        }
+
+        /* Верхняя строка — Rubik 500 + 3D */
+        .hero-ring-title-small {
+            font-family: 'Rubik', 'Montserrat', Arial, Helvetica, sans-serif;
+            font-size: 46px;
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.06em;
+            text-transform: uppercase;
+            text-align: center;
+            color: #000;
+            margin-bottom: 28px;
+            background: linear-gradient(180deg, #555 0%, #000 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        /* Заголовок 1 — Rubik 700 + 3D (десктоп) */
+        .hero-ring-title-big {
+            font-family: 'Rubik', 'Montserrat', Arial, Helvetica, sans-serif;
+            font-size: 72px;
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.06em;
+            text-transform: uppercase;
+            color: #000;
+            padding-left: 17px;
+            background: linear-gradient(180deg, #555 0%, #000 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.25));
+        }
+        .hero-ring-title-big.right {
+            text-align: right;
+            padding-left: 0;
+        }
+
+        /* Описание */
+        .hero-ring-desc {
+            font-family: 'Manrope', 'Montserrat', Arial, Helvetica, sans-serif;
+            font-size: 18px;
+            font-weight: 450;
+            color: #000;
+            line-height: 1.35;
+            margin-top: 43px;
+            margin-bottom: 23px;
+            text-align: left;
+            margin-left: 20px;
+            max-width: calc(100% - 20px);
+        }
+        .hero-ring-desc .accent-strong {
+            color: var(--accent-purple);
+            font-weight: 800;
+        }
+
+        /* Кнопка — выпуклая + блеск */
+        .hero-ring-btn {
+            position: absolute;
+            right: 31px;
+            top: 658px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 44px;
+            font-family: 'Manrope', 'Montserrat', Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            background: var(--hero-btn-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: none;
+            width: max-content;
+            z-index: 3;
+            overflow: hidden;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -2px 6px rgba(0, 0, 0, 0.25),
+                0 6px 16px rgba(87, 36, 177, 0.45);
+        }
+
+        /* Блеск на кнопке (десктоп) */
+        .hero-ring-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                100deg,
+                transparent 0%,
+                transparent 35%,
+                rgba(255, 255, 255, 0.5) 50%,
+                transparent 65%,
+                transparent 100%
+            );
+            animation: btnShine 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes btnShine {
+            0% { left: -100%; }
+            60% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        /* Мобильный текст под кольцом */
+        .hero-mobile-text {
+            display: none;
+        }
+
+        /* ADAPTIVE */
+        @media (max-width: 1024px) {
+            .nav-menu { display: none; }
+            .header-actions { display: none; }
+            .menu-toggle { display: flex; }
+            .mobile-nav { display: flex; }
+        }
+
+        @media (max-width: 900px) {
+            .hero-ring-wrap {
+                width: 90%;
+                height: auto;
+                aspect-ratio: 1;
+                margin-bottom: 30px;
+            }
+            .hero-ring-img {
+                filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.75));
+            }
+            /* Свечение на мобильном — чуть ярче */
+            .hero-ring-wrap::before {
+                filter: blur(45px);
+                left: -8%;
+                right: -8%;
+                bottom: -18%;
+                top: 28%;
+                background: radial-gradient(ellipse at 50% 100%, rgba(155, 108, 230, 0.75) 0%, rgba(155, 108, 230, 0.3) 38%, transparent 74%);
+            }
+            /* Белый круг на мобильном — без внешней тени, чтобы не падала на текст */
+            .hero-ring-wrap::after {
+                box-shadow:
+                    inset 0 14px 25px rgba(255, 255, 255, 1),
+                    inset 0 -14px 25px rgba(0, 0, 0, 0.25),
+                    inset 0 0 18px rgba(0, 0, 0, 0.08);
+            }
+            .hero-ring-content {
+                width: 100%;
+                max-width: 100%;
+                padding-top: 30vw;
+                padding-left: 5%;
+                padding-right: 5%;
+                z-index: 3;
+            }
+            .hero-ring-title-small {
+                font-size: clamp(22px, 5.24vw, 40px);
+                font-weight: 300;
+                margin-bottom: 3vw;
+                text-align: center;
+                width: 100%;
+                position: relative;
+                top: -14px;
+            }
+            .hero-ring-title-big {
+                font-size: clamp(32px, 8.57vw, 72px);
+                font-weight: 500;
+                padding-left: 0;
+                width: 60vw;
+                margin: 0 auto;
+                text-align: center;
+            }
+            .hero-ring-title-big.right {
+                text-align: center;
+                padding-left: 0;
+            }
+            .hero-ring-desc,
+            .hero-ring-btn {
+                display: none;
+            }
+
+            /* Мобильный текст — поверх всех теней */
+            .hero-mobile-text {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 20px;
+                width: 100%;
+                max-width: 500px;
+                margin: 0 auto;
+                padding: 0 var(--container-padding);
+                position: relative;
+                z-index: 10;
+            }
+            .hero-mobile-desc {
+                font-size: 16px;
+                font-weight: 450;
+                color: var(--text-primary);
+                line-height: 1.4;
+                font-family: 'Manrope', 'Montserrat', Arial, Helvetica, sans-serif;
+            }
+            /* «Индивидуальному заказу» на мобильном — светлый фиолетовый */
+            .hero-mobile-desc .accent-strong {
+                color: var(--accent-purple-light);
+                font-weight: 800;
+            }
+            /* Кнопка на мобильном — выпуклая + блеск */
+            .hero-mobile-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px 44px;
+                min-height: 56px;
+                font-family: 'Manrope', 'Montserrat', Arial, Helvetica, sans-serif;
+                font-size: 13px;
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.02em;
+                background: var(--hero-btn-color);
+                color: #ffffff;
+                border: none;
+                border-radius: 100px;
+                cursor: pointer;
+                width: 100%;
+                max-width: 350px;
+                position: relative;
+                overflow: hidden;
+                box-shadow:
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                    inset 0 -2px 6px rgba(0, 0, 0, 0.25),
+                    0 6px 16px rgba(87, 36, 177, 0.45);
+            }
+            /* Блеск на мобильной кнопке */
+            .hero-mobile-btn::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(
+                    100deg,
+                    transparent 0%,
+                    transparent 35%,
+                    rgba(255, 255, 255, 0.5) 50%,
+                    transparent 65%,
+                    transparent 100%
+                );
+                animation: btnShine 3s ease-in-out infinite;
+                pointer-events: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ХЭДЕР -->
+    <header class="header">
+        <div class="container">
+            <a href="#" class="header-logo" aria-label="ЧИСТОВ — на главную">
+                <img src="https://drive.google.com/thumbnail?id=18pWG6c931iJ1vUJW0FhV0cwUw3onFd2C&sz=w400" alt="ЧИСТОВ" />
+            </a>
+
+            <nav class="nav-menu">
+                <a href="#">Кому</a>
+                <a href="#">География</a>
+                <a href="#">Портфолио</a>
+                <a href="#">Этапы</a>
+                <a href="#">Контакты</a>
+            </nav>
+
+            <div class="header-actions">
+                <a href="https://max.ru/u/f9LHodD0cOLiLQxALDD88o6L8XCD14FWQlPVTH_J8rmgT9sYYdNVJjuifXg" class="header-action-item" target="_blank" rel="noreferrer noopener">
+                    <img src="https://drive.google.com/thumbnail?id=1vf_bnEwg1gkiDiOwAHWc7meT_FR69DoE&sz=w100" alt="MAX" />
+                    <span>Написать</span>
+                </a>
+                <button type="button" class="header-action-item" id="phoneTrigger">
+                    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <span>Связаться</span>
+                </button>
+
+                <div class="phone-plate" id="phonePlate">+7 929 621 52 15</div>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Меню" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <nav class="mobile-nav" id="mobileNav" aria-hidden="true">
+        <button class="mobile-nav-close" id="mobileNavClose" aria-label="Закрыть меню">✕</button>
+
+        <div class="mobile-nav-list">
+            <a href="#">Кому</a>
+            <a href="#">География</a>
+            <a href="#">Портфолио</a>
+            <a href="#">Этапы</a>
+            <a href="#">Контакты</a>
+        </div>
+
+        <div class="mobile-nav-contacts">
+            <a href="https://max.ru/u/f9LHodD0cOLiLQxALDD88o6L8XCD14FWQlPVTH_J8rmgT9sYYdNVJjuifXg" class="mobile-contact-item" target="_blank" rel="noreferrer noopener">
+                <span class="mobile-contact-icon">
+                    <img src="https://drive.google.com/thumbnail?id=1Cmbo3A6GNBL7dtJ24FemDq9thq9g3gbS&sz=w100" alt="MAX" />
+                </span>
+                Написать в MAX
+            </a>
+            <a href="https://t.me/V_CHISTOV" class="mobile-contact-item" target="_blank" rel="noreferrer noopener">
+                <span class="mobile-contact-icon">
+                    <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                </span>
+                Написать в Telegram
+            </a>
+            <a href="tel:+79296215215" class="mobile-contact-item">
+                <span class="mobile-contact-icon">
+                    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </span>
+                Позвонить
+            </a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-ring-wrap">
+                <img src="https://drive.google.com/thumbnail?id=16WBvfd_D3fCLaDvQqdeeY5hP8MUuJmXb&sz=w1400" alt="ЧИСТОВ" class="hero-ring-img" />
+
+                <div class="hero-ring-content">
+                    <div class="hero-ring-title-small">К ЛЮБОЙ ЗАДАЧЕ</div>
+                    <div class="hero-ring-title-big">НАЙДЁМ</div>
+                    <div class="hero-ring-title-big right">РЕШЕНИЕ</div>
+                    <div class="hero-ring-desc">
+                        Декорации, мебель и конструкции по вашему <span class="accent-strong">индивидуальному заказу</span>. Собственное производство, опытная команда, полное сопровождение — от идеи до реализации.
+                    </div>
+                    <button class="hero-ring-btn">ОБСУДИТЬ ПРОЕКТ</button>
+                </div>
+            </div>
+
+            <div class="hero-mobile-text">
+                <div class="hero-mobile-desc">
+                    Декорации, мебель и конструкции по вашему <span class="accent-strong">индивидуальному заказу</span>. Собственное производство, опытная команда, полное сопровождение — от идеи до реализации.
+                </div>
+                <button class="hero-mobile-btn">ОБСУДИТЬ ПРОЕКТ</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const phoneTrigger = document.getElementById('phoneTrigger');
+        const phonePlate = document.getElementById('phonePlate');
+        let phonePlateTimeout = null;
+
+        if (phoneTrigger && phonePlate) {
+            phoneTrigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                phonePlate.classList.add('active');
+                if (phonePlateTimeout) clearTimeout(phonePlateTimeout);
+                phonePlateTimeout = setTimeout(function() {
+                    phonePlate.classList.remove('active');
+                }, 4000);
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!phonePlate.contains(e.target) && e.target !== phoneTrigger && !phoneTrigger.contains(e.target)) {
+                    phonePlate.classList.remove('active');
+                }
+            });
+        }
+
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileNav = document.getElementById('mobileNav');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const mobileNavClose = document.getElementById('mobileNavClose');
+
+        function openMobileNav() {
+            menuToggle.classList.add('active');
+            menuToggle.setAttribute('aria-expanded', 'true');
+            mobileNav.classList.add('active');
+            mobileNav.setAttribute('aria-hidden', 'false');
+            mobileOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileNav() {
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            mobileNav.classList.remove('active');
+            mobileNav.setAttribute('aria-hidden', 'true');
+            mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        if (menuToggle && mobileNav) {
+            menuToggle.addEventListener('click', function() {
+                if (mobileNav.classList.contains('active')) {
+                    closeMobileNav();
+                } else {
+                    openMobileNav();
+                }
+            });
+
+            mobileNavClose.addEventListener('click', closeMobileNav);
+            mobileOverlay.addEventListener('click', closeMobileNav);
+
+            mobileNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMobileNav);
+            });
+        }
+    </script>
+
+</body>
+</html>
