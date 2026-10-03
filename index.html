@@ -779,7 +779,6 @@
             text-align: right;
         }
 
-        /* Карта — просто картинка, без клика и анимаций */
         .geography-image {
             width: 100%;
             margin-bottom: 40px;
@@ -797,7 +796,7 @@
         .ticker-track {
             display: flex;
             gap: 40px;
-            animation: tickerScroll 25s linear infinite;
+            animation: tickerScroll 40s linear infinite;
             width: max-content;
         }
         .ticker-item {
@@ -806,8 +805,8 @@
             align-items: center;
             gap: 10px;
             font-size: clamp(18px, 3vw, 28px);
-            font-weight: 500;
-            color: var(--text-primary);
+            font-weight: 400;
+            color: var(--text-secondary);
             white-space: nowrap;
             letter-spacing: 0.02em;
             text-transform: uppercase;
@@ -1096,14 +1095,47 @@
                 padding: 70px 0 60px;
             }
 
+            .solutions .container {
+                text-align: center;
+            }
+
             .solutions-title {
-                font-size: clamp(28px, 8vw, 42px);
+                font-size: clamp(22px, 6vw, 34px);
                 margin-bottom: 36px;
                 line-height: 1.05;
+                text-align: center;
                 background: linear-gradient(180deg, #ffffff 0%, #a0a0a8 100%);
                 -webkit-background-clip: text;
                 background-clip: text;
                 -webkit-text-fill-color: transparent;
+                display: inline-block;
+                position: relative;
+            }
+
+            /* Скобочки у заголовка блока 2 — рамки высотой как текст + 5px сверху/снизу */
+            .solutions-title::before,
+            .solutions-title::after {
+                content: '';
+                position: absolute;
+                top: -5px;
+                bottom: -5px;
+                width: 7px;
+                border-style: solid;
+                border-color: var(--text-tertiary);
+                pointer-events: none;
+                filter:
+                    drop-shadow(0 0 6px rgba(255, 255, 255, 0.35))
+                    drop-shadow(0 0 14px rgba(255, 255, 255, 0.18));
+            }
+            .solutions-title::before {
+                left: -18px;
+                border-width: 2px 0 2px 2px;
+                border-radius: 3px 0 0 3px;
+            }
+            .solutions-title::after {
+                right: -18px;
+                border-width: 2px 2px 2px 0;
+                border-radius: 0 3px 3px 0;
             }
 
             .solutions-slider {
@@ -1315,11 +1347,43 @@
                 padding: 40px 0 70px;
             }
 
+            .geography .container {
+                text-align: center;
+            }
+
             .geography-title {
-                font-size: clamp(28px, 8vw, 42px);
+                font-size: clamp(22px, 6vw, 34px);
                 margin-bottom: 30px;
                 line-height: 1.05;
-                text-align: right;
+                text-align: center;
+                display: inline-block;
+                position: relative;
+            }
+
+            /* Скобочки у заголовка блока 3 — рамки высотой как текст + 5px сверху/снизу */
+            .geography-title::before,
+            .geography-title::after {
+                content: '';
+                position: absolute;
+                top: -5px;
+                bottom: -5px;
+                width: 7px;
+                border-style: solid;
+                border-color: var(--text-tertiary);
+                pointer-events: none;
+                filter:
+                    drop-shadow(0 0 6px rgba(255, 255, 255, 0.35))
+                    drop-shadow(0 0 14px rgba(255, 255, 255, 0.18));
+            }
+            .geography-title::before {
+                left: -18px;
+                border-width: 2px 0 2px 2px;
+                border-radius: 3px 0 0 3px;
+            }
+            .geography-title::after {
+                right: -18px;
+                border-width: 2px 2px 2px 0;
+                border-radius: 0 3px 3px 0;
             }
 
             .geography-image {
