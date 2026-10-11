@@ -13,6 +13,11 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
+
+        :root{
+            --grad: linear-gradient(135deg, #7C3AED 0%, #A855F7 25%, #F472B6 55%, #F97316 100%);
+        }
+
         body {
             font-family: 'Montserrat', Arial, Helvetica, sans-serif;
             background: #121214;
@@ -24,6 +29,17 @@
         }
         a { color: inherit; text-decoration: none; }
         img { max-width: 100%; height: auto; display: block; }
+
+        /* ============================================================= */
+        /* УТИЛИТА: текст с градиентом                                   */
+        /* ============================================================= */
+        .grad-text{
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
 
         /* ==================== ХЭДЕР ==================== */
         .privacy-header {
@@ -53,25 +69,34 @@
             line-height: 1.1;
             letter-spacing: 0.01em;
         }
+
+        /* Ссылка «На главную» — теперь с градиентным текстом */
         .privacy-back {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            color: #A57EFF;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             transition: opacity 0.3s ease;
             cursor: pointer;
             white-space: nowrap;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
         }
         .privacy-back:hover { opacity: 0.7; }
+
+        /* Иконка стрелки — SVG не поддерживает background-clip,
+           поэтому красим через stroke с градиентом */
         .privacy-back svg {
             width: 18px;
             height: 18px;
             fill: none;
-            stroke: currentColor;
+            stroke: url(#backGrad);
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
@@ -91,6 +116,7 @@
             line-height: 1.15;
             letter-spacing: -0.03em;
             text-transform: uppercase;
+            /* Заголовок — оставляем как был: светлый градиент */
             background: linear-gradient(180deg, #ffffff 0%, #a0a0a8 100%);
             -webkit-background-clip: text;
             background-clip: text;
@@ -137,13 +163,25 @@
             margin-bottom: 8px;
             line-height: 1.65;
         }
+
+        /* ===== ССЫЛКИ ВНУТРИ ТЕКСТА — ГРАДИЕНТНЫЕ ===== */
         .privacy-content a {
-            color: #A57EFF;
+            font-weight: 600;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
             text-decoration: underline;
+            text-decoration-color: #A855F7;
             text-underline-offset: 3px;
             transition: opacity 0.3s ease;
         }
-        .privacy-content a:hover { opacity: 0.7; }
+        .privacy-content a:hover {
+            opacity: 0.7;
+            text-decoration-color: #F97316;
+        }
+
         .privacy-content strong { color: #ffffff; font-weight: 600; }
 
         /* Раздел «Основные понятия» — пронумерованные пункты */
@@ -202,7 +240,12 @@
             color: #ffffff;
         }
         .privacy-footer-inner a {
-            color: #A57EFF;
+            font-weight: 600;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
             transition: opacity 0.3s ease;
         }
         .privacy-footer-inner a:hover { opacity: 0.7; }
@@ -234,13 +277,25 @@
 </head>
 <body>
 
+    <!-- SVG-градиент для stroke иконки (SVG не умеет background-clip) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <linearGradient id="backGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#7C3AED"/>
+                <stop offset="25%" stop-color="#A855F7"/>
+                <stop offset="55%" stop-color="#F472B6"/>
+                <stop offset="100%" stop-color="#F97316"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
     <!-- ==================== ХЭДЕР ==================== -->
     <header class="privacy-header">
         <div class="privacy-header-inner">
             <a href="index.html" class="privacy-logo-text" aria-label="На главную">Производственная Мастерская</a>
             <a href="index.html" class="privacy-back">
                 <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                На главную
+                <span>На главную</span>
             </a>
         </div>
     </header>
