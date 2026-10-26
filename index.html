@@ -2700,38 +2700,44 @@
     <h3>Обсудить проект</h3>
     <p class="form-subtitle">Заполните форму, и мы свяжемся с вами в ближайшее время</p>
 
-    <form id="contactForm">
-      <div class="form-group">
-        <label for="formName">Имя</label>
-        <input type="text" id="formName" name="name" placeholder="Введите ваше имя" required />
-      </div>
-      <div class="form-group">
-        <label for="formContact">Контакт для связи</label>
-        <input type="tel" id="formContact" name="phone" placeholder="+7 (___) ___-__-__" required />
-      </div>
-      <div class="form-group">
-        <label for="formEmail">Электронная почта</label>
-        <input type="email" id="formEmail" name="email" placeholder="example@mail.ru" required />
-      </div>
-      <div class="form-group">
-        <label for="formRequest">Примерный запрос</label>
-        <textarea id="formRequest" name="message" placeholder="Опишите, что вы хотите реализовать..."></textarea>
-      </div>
+   <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+  <!-- Скрытые поля Web3Forms -->
+  <input type="hidden" name="access_key" value="888ed9c6-0af1-4199-8c53-83365b003af0">
+  <input type="hidden" name="subject" value="Новая заявка с сайта ЧИСТОВ">
+  <input type="hidden" name="from_name" value="Сайт ЧИСТОВ">
+  <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
 
-      <!-- Чекбокс согласия на обработку персональных данных -->
-      <div class="form-consent">
-        <label class="form-consent-label" for="formConsent">
-          <input type="checkbox" id="formConsent" name="consent" required />
-          <span>
-            Я согласен(на) на обработку моих персональных данных в соответствии с
-            <a href="privacy.html" target="_blank" rel="noreferrer noopener">Политикой обработки персональных данных</a>
-          </span>
-        </label>
-      </div>
+  <div class="form-group">
+    <label for="formName">Имя</label>
+    <input type="text" id="formName" name="name" placeholder="Введите ваше имя" required />
+  </div>
+  <div class="form-group">
+    <label for="formContact">Контакт для связи</label>
+    <input type="tel" id="formContact" name="phone" placeholder="+7 (___) ___-__-__" required />
+  </div>
+  <div class="form-group">
+    <label for="formEmail">Электронная почта</label>
+    <input type="email" id="formEmail" name="email" placeholder="example@mail.ru" required />
+  </div>
+  <div class="form-group">
+    <label for="formRequest">Примерный запрос</label>
+    <textarea id="formRequest" name="message" placeholder="Опишите, что вы хотите реализовать..."></textarea>
+  </div>
+  
+  <!-- Чекбокс согласия -->
+  <div class="form-consent">
+    <label class="form-consent-label" for="formConsent">
+      <input type="checkbox" id="formConsent" name="consent" required />
+      <span>
+        Я согласен(на) на обработку моих персональных данных в соответствии с
+        <a href="privacy.html" target="_blank" rel="noreferrer noopener">Политикой обработки персональных данных</a>
+      </span>
+    </label>
+  </div>
 
-      <button type="submit" class="form-submit" id="formSubmit" disabled>Отправить</button>
-    </form>
-
+  <button type="submit" class="form-submit" id="formSubmit" disabled>Отправить</button>
+</form>
+    
     <!-- Логотип внизу формы -->
     <div class="form-brand-bottom">
       <img src="logo/logo_rus.png" alt="Логотип" />
@@ -2923,8 +2929,8 @@
     updateSubmitState();
   }
 
-  if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
+    if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
       e.preventDefault();
 
       if (formConsent && !formConsent.checked) {
@@ -2933,10 +2939,40 @@
         return;
       }
 
-      alert('Заявка отправлена! (заглушка)');
-      contactForm.reset();
-      if (formSubmit) formSubmit.disabled = true;
-      closeForm();
+      const submitBtn = contactForm.querySelector('.form-submit');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Отправляем...';
+      submitBtn.disabled = true;
+
+      try {
+        const formData = new FormData(contactForm);
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+        const result = await response.json();
+
+        if (result.success) {
+          contactForm.reset();
+          if (formSubmit) formSubmit.disabled = true;
+          
+          // Открываем окно благодарности
+          if (typeof openThanks === 'function') {
+            openThanks(); 
+          } else {
+            alert('Спасибо! Заявка отправлена.');
+            closeForm();
+          }
+        } else {
+          alert('Ошибка отправки: ' + (result.message || 'попробуйте позвонить нам напрямую.'));
+        }
+      } catch (err) {
+        alert('Ошибка соединения. Позвоните нам: +7 929 621 52 15');
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = formConsent && !formConsent.checked;
+      }
     });
   }
 
